@@ -34,7 +34,7 @@ public class Main {
 		// - DEFAULT
 		// - CHECK (IS JSON)
 		// - PRIMARY KEY
-		// - FOREIGN KEY
+		// - FOREIGN KEYYYY
 
 		System.out.println("Hello world!");
 	}
