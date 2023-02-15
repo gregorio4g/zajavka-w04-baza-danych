@@ -1,7 +1,9 @@
 package gg.com.code;
 
+import org.jetbrains.annotations.NotNull;
+
 public class Main {
-	public static void main(String[] args) {
+	public static void main(@NotNull String[] args) {
 		// CRUD - create, read, update, delete
 		// DBMS - PostgreSQL, Oracle, MySQL, MS SQL Server, IBM Db2, MS Access, SQLite
 		// Database Server - Client
