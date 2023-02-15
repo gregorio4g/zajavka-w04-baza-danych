@@ -34,7 +34,28 @@ public class Main {
 		// - DEFAULT
 		// - CHECK (IS JSON)
 		// - PRIMARY KEY
-		// - FOREIGN KEYYYY
+		// - FOREIGN KEY
+
+		/* typy danych PostgeSQL
+		* name					| rozmiar		| zakres									| komentarz
+		* ------------------------------------------------------------------
+		* boolean				| 1 bajt		| false , true						| może też być null
+		* --
+		* smallint			| 2 bajty		| -32768, 32767						| integer o małym zakresie danych
+		* integer				| 4 bajty		| -2147483648, 2147483647	| najczęściej używane
+		* bigint				| 8 bajtów	|													| integer o dużym zakresie danych
+		* real					| 4 bajty		| dokładność 6 cyfr po ,	|
+		* numeric(p,s)	| zmienny
+		* --
+		* char(n)				| 					| ciąg znaków długości n dopełniona spacjami
+		* varchar(n)		|						| nie dopełni spacjami
+		* text					|						| nieograniczona długość
+		* --
+		* date											| tylko data
+		* time											| tylko czas
+		* timestamp									| data i czas
+		* timestamp with timezone		| przechowuje datę i czas z uwzględnieniem strefy czasowej
+		* */
 
 		System.out.println("Hello world!");
 	}
