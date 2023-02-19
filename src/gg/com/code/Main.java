@@ -2,7 +2,10 @@ package gg.com.code;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 public class Main {
 	public static void main(@NotNull String[] args) {
@@ -62,41 +65,21 @@ public class Main {
 		String address = "jdbc:postgresql://localhost:5432/zajavka";
 		String username = "postgres";
 		String password = "bingo";
-		Connection connection = null;
-		Statement statement = null;
-		ResultSet resultSet = null;
 
-		try {
-			connection = DriverManager.getConnection(address, username, password);
-			System.out.println(connection);
-			statement = connection.createStatement();
-			resultSet = statement.executeQuery("");
+		String query1 = "INSERT INTO PRODUCER(ID, PRODUCER_NAME, ADDRESS)"
+				+ "VALUES (6, 'Zajavka Group 6', 'Zajavkowa 15, Warszawa')";
+		String query2 = "UPDATE PRODUCER SET ADDRESS = 'Nowy Adres Siedziby' WHere ID = 1";
+		String query3 = "DELETE FROM PRODUCER WHERE ID = 2";
+
+		String query4 = "SELECT * FROM PRODUCER";
+		try (Connection connection = DriverManager.getConnection(address, username, password);
+				 Statement statement = connection.createStatement();
+				 ResultSet resultSet = statement.executeQuery(query4)
+		) {
+//			int i = statement.executeUpdate(query1);
+//			System.out.println(i);
 		} catch (Exception e) {
-			System.out.println("Exception: " + e.getMessage());
-		} finally {
-			try {
-				if (resultSet != null) {
-					resultSet.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-			try {
-				if (statement != null) {
-					statement.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-			try {
-				if (connection != null) {
-					connection.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			System.err.println("Exception: " + e.getMessage());
 		}
 
 	}
