@@ -2,10 +2,7 @@ package gg.com.code;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 
 public class Main {
 	public static void main(@NotNull String[] args) {
@@ -63,21 +60,45 @@ public class Main {
 		 * */
 
 		String address = "jdbc:postgresql://localhost:5432/zajavka";
-		String username = "postgres";
-		String password = "bingo";
+		String dbUsername = "postgres";
+		String dbPassword = "bingo";
 
-		String query1 = "INSERT INTO PRODUCER(ID, PRODUCER_NAME, ADDRESS)"
-				+ "VALUES (6, 'Zajavka Group 6', 'Zajavkowa 15, Warszawa')";
-		String query2 = "UPDATE PRODUCER SET ADDRESS = 'Nowy Adres Siedziby' WHere ID = 1";
-		String query3 = "DELETE FROM PRODUCER WHERE ID = 2";
+//		String username = "ntinner27";
+		String username = "whatever' or 1=1 or USER_NAME = 'WhateverAgain";
+
+		String query1 = "DELETE FROM OPINION WHERE CUSTOMER_ID " +
+				"IN (SELECT ID FROM CUSTOMER WHERE USER_NAME = ?)";
+		String query2 = "DELETE FROM PURCHASE WHERE CUSTOMER_ID " +
+				"IN (SELECT ID FROM CUSTOMER WHERE USER_NAME = ?)";
+		String query3 = "DELETE FROM CUSTOMER WHERE USER_NAME = ?";
 
 		String query4 = "SELECT * FROM PRODUCER";
-		try (Connection connection = DriverManager.getConnection(address, username, password);
+
+		try (Connection connection = DriverManager.getConnection(address, dbUsername, dbPassword);
 				 Statement statement = connection.createStatement();
-				 ResultSet resultSet = statement.executeQuery(query4)
+				 ResultSet resultSet = statement.executeQuery(query4);
+
+				 PreparedStatement statement1 = connection.prepareStatement(query1);
+				 PreparedStatement statement2 = connection.prepareStatement(query2);
+				 PreparedStatement statement3 = connection.prepareStatement(query3)
 		) {
-//			int i = statement.executeUpdate(query1);
-//			System.out.println(i);
+			statement1.setString(1, username);
+			int count1 = statement1.executeUpdate();
+			System.out.println("Changed " + count1 + " rows from OPINION");
+
+			statement2.setString(1, username);
+			int count2 = statement2.executeUpdate();
+			System.out.println("Changed " + count2 + " rows from PURCHASE");
+
+			statement3.setString(1, username);
+			int count3 = statement3.executeUpdate();
+			System.out.println("Changed " + count3 + " rows from CUSTOMER");
+
+			ResultSetMetaData metaData = resultSet.getMetaData();
+			for (int i = 1; i <= metaData.getColumnCount(); i++) {
+				System.out.print(metaData.getColumnName(i) + " ");
+				System.out.println(metaData.getColumnTypeName(i));
+			}
 		} catch (Exception e) {
 			System.err.println("Exception: " + e.getMessage());
 		}
