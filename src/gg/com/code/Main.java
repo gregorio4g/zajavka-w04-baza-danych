@@ -3,6 +3,7 @@ package gg.com.code;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.*;
+import java.util.List;
 
 public class Main {
 	public static void main(@NotNull String[] args) {
@@ -72,7 +73,10 @@ public class Main {
 				"IN (SELECT ID FROM CUSTOMER WHERE USER_NAME = ?)";
 		String query3 = "DELETE FROM CUSTOMER WHERE USER_NAME = ?";
 
-		String query4 = "SELECT * FROM PRODUCER";
+		String query4 = "SELECT * FROM CUSTOMER";
+
+		String query5 = "SELECT * FROM CUSTOMER WHERE NAME LIKE ?";
+		String parameter = "%me%";
 
 		try (Connection connection = DriverManager.getConnection(address, dbUsername, dbPassword);
 				 Statement statement = connection.createStatement();
@@ -80,7 +84,9 @@ public class Main {
 
 				 PreparedStatement statement1 = connection.prepareStatement(query1);
 				 PreparedStatement statement2 = connection.prepareStatement(query2);
-				 PreparedStatement statement3 = connection.prepareStatement(query3)
+				 PreparedStatement statement3 = connection.prepareStatement(query3);
+
+				 PreparedStatement statement5 = connection.prepareStatement(query5)
 		) {
 			statement1.setString(1, username);
 			int count1 = statement1.executeUpdate();
@@ -99,8 +105,16 @@ public class Main {
 				System.out.print(metaData.getColumnName(i) + " ");
 				System.out.println(metaData.getColumnTypeName(i));
 			}
-		} catch (Exception e) {
+
+			statement5.setString(1, parameter);
+			try (ResultSet resultSet5 = statement5.executeQuery()) {
+				List<Customer> customers = CustomerMapper.addToCustomer(resultSet5);
+				customers.forEach(System.out::println);
+			}
+		} catch (SQLException e) {
 			System.err.println("Exception: " + e.getMessage());
+			System.out.println(e.getSQLState());
+			System.out.println(e.getErrorCode());
 		}
 
 	}
