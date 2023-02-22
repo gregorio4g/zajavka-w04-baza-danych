@@ -16,11 +16,13 @@ public class Main {
 			command = scanner.nextLine();
 			List<String> commandList = commandToList(command);
 			switch (commandList.get(0).toUpperCase()) {
-				case "CREATE":
+				case "CREATE" -> {
 					if (commandList.size() > 1) {
 						toDo.createTask(commandList.subList(1, commandList.size()));
 					}
-					break;
+				}
+				case "UPDATE" -> toDo.updateTask(commandList.subList(1, commandList.size()));
+				case "READ" -> toDo.read1(commandList.subList(1, commandList.size()));
 			}
 		}
 	}
