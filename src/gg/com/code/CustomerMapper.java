@@ -1,10 +1,13 @@
 package gg.com.code;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerMapper {
+	@NotNull
 	public static List<Customer> addToCustomer(ResultSet resultSet) {
 		List<Customer> result	= new ArrayList<>();
 		try {
